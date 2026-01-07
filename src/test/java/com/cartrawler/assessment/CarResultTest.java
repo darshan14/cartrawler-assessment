@@ -35,6 +35,16 @@ public class CarResultTest {
         cars.add(new CarResult("Suzuki Swift", "RHODIUM", "CMMV", 56.4d, CarResult.FuelPolicy.FULLEMPTY));
     }
 
+    /* Checking Empty Car List to run teh method safe and avoid any Null Pointer Exception due to not null car list. */
+    @Test
+    void testEmptyCarList() {
+        Set<CarResult> emptyCarList = new HashSet<CarResult>();
+        CarService carService = new CarService();
+
+        Set<CarResult> sortedCarList =  carService.sortByConditions(emptyCarList);
+        assertTrue(sortedCarList.isEmpty());
+    }
+
     @Test
     void testRemoveDuplicates() {
         CarService carService = new CarService();
@@ -46,6 +56,7 @@ public class CarResultTest {
         assertEquals(10, carList.size());
     }
 
+    /* Checking whether the Top Car is the Corporate Group Car from the given data.*/
     @Test
     void testCorporateCarSort() {
         CarService carService = new CarService();
@@ -60,6 +71,7 @@ public class CarResultTest {
         assertFalse(carService.isCorporateGroupCar(bottomCar));
     }
 
+    /* Checking whether the car is removed (Eg: "AVIS") from the final list whose fuel type is FULLFULL and the rental cost is above teh median. */
     @Test
     void testMedianCondition() {
 

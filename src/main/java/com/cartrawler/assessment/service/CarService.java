@@ -10,6 +10,10 @@ public class CarService {
 
     public Set<CarResult> sortByConditions(Set<CarResult> carList) {
 
+        if (carList == null || carList.isEmpty()) {
+            return Collections.emptySet();
+        }
+
         // Removed the duplicated records from the list
         List<CarResult> distinctCarList = carList.stream().collect(Collectors.toMap(
                 CarResult::toString, car -> car,  (exist, replace) -> exist
@@ -22,17 +26,12 @@ public class CarService {
 
 
         // Removed the cars whose FuelType.FULLFULL and Rental Cost > Median of teh Group
-        /*List<CarResult> finalBeforeSortedList = carGroups.values().stream().flatMap(cars -> {
-            var median = calculateMedian(cars);
-            return cars.stream().filter(car -> !(car.getFuelPolicy() == CarResult.FuelPolicy.FULLFULL & car.getRentalCost() > median));
-        }).toList();*/
-
         List<CarResult> finalBeforeSortedList = new ArrayList<CarResult>();
 
         carGroups.values().forEach((cars) -> {
             var median = calculateMedian(cars);
             for(CarResult car: cars) {
-                if(!(car.getFuelPolicy() == CarResult.FuelPolicy.FULLFULL & car.getRentalCost() > median))
+                if(!(car.getFuelPolicy() == CarResult.FuelPolicy.FULLFULL && car.getRentalCost() > median))
                     finalBeforeSortedList.add(car);
             }
         });
